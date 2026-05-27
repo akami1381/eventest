@@ -25,6 +25,7 @@ import eventSummit from "@/assets/event-vibe-coding-summit.jpg";
 import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
 import avatarPriya from "@/assets/avatar-priya.jpg";
+import phoneMockup from "@/assets/phone-mockup-v2.png";
 
 
 const features = [
