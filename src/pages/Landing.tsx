@@ -353,7 +353,7 @@ const Landing = () => {
   }, [titleWeight]);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
+    <div className="min-h-screen bg-background overflow-x-hidden pt-[72px]">
       {/* Persistent navbar */}
       <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-background/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-6 lg:px-8">
