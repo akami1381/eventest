@@ -299,9 +299,14 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
   );
 }
 
+const navLinks = [
+  { label: "Functionalitati", href: "#features" },
+  { label: "Modele", href: "#models" },
+  { label: "Preturi", href: "#pricing" },
+];
+
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
-  const [navVisible, setNavVisible] = useState(false);
   const [devOpen, setDevOpen] = useState(false);
   const [titleWeight, setTitleWeight] = useState(700);
   const [confettiSize, setConfettiSize] = useState(2.5);
@@ -340,14 +345,6 @@ const Landing = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setNavVisible(window.scrollY > 80);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
   // Apply title weight globally
   useEffect(() => {
     document.querySelectorAll<HTMLElement>("h1,h2,h3,h4,h5,h6,.font-display").forEach((el) => {
@@ -357,27 +354,34 @@ const Landing = () => {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Navbar — hidden until scroll */}
-      <motion.nav
-        className="fixed top-0 w-full z-50 bg-background/90 backdrop-blur-md"
-        initial={{ y: -100 }}
-        animate={{ y: navVisible ? 0 : -100 }}
-        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      >
+      {/* Persistent navbar */}
+      <nav className="sticky top-0 w-full z-50 bg-background/90 backdrop-blur-md">
         <div className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-6 lg:px-8">
           <Link to="/">
             <Logo size="md" />
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
             <Button variant="ghost" className="text-sm font-medium" asChild>
-              <Link to="/auth">Log in</Link>
+              <Link to="/auth">Intra in cont</Link>
             </Button>
             <Button className="hidden sm:inline-flex text-sm font-semibold" asChild>
-              <Link to="/auth">Sign up</Link>
+              <Link to="/auth">Creaza invitatie</Link>
             </Button>
           </div>
         </div>
-      </motion.nav>
+      </nav>
+
 
       {/* Hero */}
       <section className="relative overflow-hidden">
@@ -490,7 +494,7 @@ const Landing = () => {
       </section>
 
       {/* Upcoming events showcase */}
-      <section className="py-12 lg:py-16 pb-20 lg:pb-28">
+      <section id="models" className="py-12 lg:py-16 pb-20 lg:pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
@@ -605,6 +609,60 @@ const Landing = () => {
               })}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Pricing — free forever */}
+      <section id="pricing" className="py-20 lg:py-28">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10"
+          >
+            <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+              Preturi
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Gratuit pentru totdeauna
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base sm:text-lg">
+              eventspark este 100% gratuit. Fara abonamente, fara comisioane, fara limite ascunse.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="rounded-3xl bg-card shadow-sm p-8 sm:p-10 text-center"
+          >
+            <div className="flex items-baseline justify-center gap-2 mb-6">
+              <span className="text-6xl font-display font-bold text-foreground tracking-[-0.02em]">0 €</span>
+              <span className="text-muted-foreground">/ pentru totdeauna</span>
+            </div>
+            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-foreground text-left max-w-md mx-auto mb-8">
+              {[
+                "Evenimente nelimitate",
+                "Participanti nelimitati",
+                "Pagini de inscriere personalizate",
+                "Analytics in timp real",
+                "Integrari cu 20+ tool-uri",
+                "Export CSV si QR check-in",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Button size="lg" className="font-semibold" asChild>
+              <Link to="/auth">Creaza invitatie</Link>
+            </Button>
+          </motion.div>
         </div>
       </section>
 
