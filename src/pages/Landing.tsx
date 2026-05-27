@@ -383,84 +383,24 @@ const Landing = () => {
       </nav>
 
 
-      {/* Hero */}
+      {/* Hero — classic split */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 lg:py-28">
-          <div className="relative min-h-[580px] flex items-center justify-center">
-
-            {/* Confetti shapes behind cards — dynamic */}
-            <ConfettiLayer size={confettiSize} opacity={confettiOpacity} count={confettiCount} spread={confettiSpread} />
-            {/* Top-left card */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16 lg:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            {/* Left — copy + CTAs */}
             <motion.div
-              className="hidden md:block absolute left-[-100px] lg:left-[-40px] top-[20px] w-[200px] lg:w-[260px]"
-              initial={{ opacity: 0, scale: 0.3, x: -80, y: -60 }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.2 }}
-            >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[6deg]">
-                <img src={eventChill} alt="Chill code workshop" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Workshop</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Bottom-left card */}
-            <motion.div
-              className="hidden md:block absolute left-[-120px] lg:left-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
-              initial={{ opacity: 0, scale: 0.3, x: -80, y: 60 }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.35 }}
-            >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-5deg]">
-                <img src={eventJam} alt="Late night jam" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Social</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Top-right card */}
-            <motion.div
-              className="hidden md:block absolute right-[-100px] lg:right-[-40px] top-[20px] w-[200px] lg:w-[260px]"
-              initial={{ opacity: 0, scale: 0.3, x: 80, y: -60 }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.25 }}
-            >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[-6deg]">
-                <img src={eventStartup} alt="Startup weekend" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Hackathon</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Bottom-right card */}
-            <motion.div
-              className="hidden md:block absolute right-[-120px] lg:right-[-60px] bottom-[20px] w-[200px] lg:w-[260px]"
-              initial={{ opacity: 0, scale: 0.3, x: 80, y: 60 }}
-              animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
-              transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.4 }}
-            >
-              <div className="rounded-2xl overflow-hidden shadow-lg rotate-[5deg]">
-                <img src={eventSummit} alt="Vibe coding summit" className="w-full h-[150px] object-cover" />
-                <div className="bg-card px-3 py-2">
-                  <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">Conference</span>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Center — headline */}
-            <motion.div
-              className="text-center max-w-2xl mx-auto relative z-10"
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.6 }}
+              className="text-left"
             >
-              <div className="flex items-center justify-center mb-6">
-                <Logo size="lg" />
-              </div>
-              <h1 className="text-4xl sm:text-5xl lg:text-[44px] 2xl:text-[56px] font-display tracking-tight leading-[1.15] text-foreground mb-6" style={{ fontWeight: titleWeight }}>
+              <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-6">
+                Gratuit pentru totdeauna
+              </span>
+              <h1
+                className="font-display tracking-[-0.02em] leading-[1.05] text-foreground text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-6"
+                style={{ fontWeight: titleWeight }}
+              >
                 The event platform
                 <br />
                 where ideas become{" "}
@@ -472,22 +412,64 @@ const Landing = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -16 }}
                       transition={{ duration: 0.35 }}
-                      className="text-foreground inline-block"
+                      className="text-primary inline-block"
                     >
                       {rotatingWords[wordIndex]}
                     </motion.span>
                   </AnimatePresence>
-                  {/* Invisible longest word to reserve space */}
                   <span className="invisible block h-0 overflow-hidden" aria-hidden="true">communities.</span>
                 </span>
               </h1>
-              <p className="text-lg text-muted-foreground max-w-lg mx-auto mb-8 leading-relaxed">
-                Whatever your event — from workshops to conferences — build branded
-                registration pages, track attendees, and grow your community. No code required.
+              <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
+                Construieste pagini de inregistrare cu brand-ul tau, urmareste participantii si
+                creste-ti comunitatea. Fara cod, fara complicatii.
               </p>
-              <Button size="lg" className="text-base font-semibold px-8 h-12" asChild>
-                <Link to="/auth">Get started <ArrowRight className="ml-2 w-4 h-4" /></Link>
-              </Button>
+              <div className="flex flex-wrap items-center gap-3 mb-6">
+                <Button size="lg" className="text-base font-semibold px-8 h-12" asChild>
+                  <Link to="/auth">Creaza invitatie <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                </Button>
+                <Button size="lg" variant="ghost" className="text-base font-semibold px-6 h-12" asChild>
+                  <a href="#models">Vezi modele</a>
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Fara card. Fara limite. Configurare in 2 minute.
+              </p>
+            </motion.div>
+
+            {/* Right — event card mockup */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
+              className="relative flex items-center justify-center"
+            >
+              <div className="absolute inset-0 -z-10 flex items-center justify-center">
+                <div className="w-[80%] h-[80%] rounded-full bg-primary/25 blur-3xl" />
+              </div>
+              <div className="relative w-full max-w-md lg:max-w-lg rounded-3xl overflow-hidden bg-card shadow-2xl">
+                <img
+                  src={eventSummit}
+                  alt="Previzualizare pagina de inregistrare eventspark"
+                  className="w-full h-64 sm:h-72 object-cover"
+                />
+                <div className="p-6 sm:p-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full">Conferinta</span>
+                    <span className="text-xs text-muted-foreground">Sambata, 19 Apr</span>
+                  </div>
+                  <h3 className="font-display font-bold text-2xl text-foreground tracking-[-0.01em]">
+                    Vibe coding summit 2026
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="h-10 rounded-full bg-muted" />
+                    <div className="h-10 rounded-full bg-muted" />
+                  </div>
+                  <div className="h-11 rounded-full bg-foreground flex items-center justify-center">
+                    <span className="text-sm font-semibold text-background">Inregistreaza-te</span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
