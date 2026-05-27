@@ -494,7 +494,7 @@ const Landing = () => {
       </section>
 
       {/* Upcoming events showcase */}
-      <section className="py-12 lg:py-16 pb-20 lg:pb-28">
+      <section id="models" className="py-12 lg:py-16 pb-20 lg:pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between mb-10">
             <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
