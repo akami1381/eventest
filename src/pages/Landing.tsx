@@ -612,6 +612,60 @@ const Landing = () => {
         </div>
       </section>
 
+      {/* Pricing — free forever */}
+      <section id="pricing" className="py-20 lg:py-28">
+        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-10"
+          >
+            <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
+              Preturi
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+              Gratuit pentru totdeauna
+            </h2>
+            <p className="text-muted-foreground mt-4 text-base sm:text-lg">
+              eventspark este 100% gratuit. Fara abonamente, fara comisioane, fara limite ascunse.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="rounded-3xl bg-card shadow-sm p-8 sm:p-10 text-center"
+          >
+            <div className="flex items-baseline justify-center gap-2 mb-6">
+              <span className="text-6xl font-display font-bold text-foreground tracking-[-0.02em]">0 €</span>
+              <span className="text-muted-foreground">/ pentru totdeauna</span>
+            </div>
+            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-foreground text-left max-w-md mx-auto mb-8">
+              {[
+                "Evenimente nelimitate",
+                "Participanti nelimitati",
+                "Pagini de inscriere personalizate",
+                "Analytics in timp real",
+                "Integrari cu 20+ tool-uri",
+                "Export CSV si QR check-in",
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <Button size="lg" className="font-semibold" asChild>
+              <Link to="/auth">Creaza invitatie</Link>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Social proof */}
       <section className="py-20 lg:py-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
