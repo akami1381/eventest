@@ -437,21 +437,39 @@ const Landing = () => {
               </p>
             </motion.div>
 
-            {/* Right — phone mockup */}
+            {/* Right — event card mockup */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, scale: 0.95, y: 16 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.15 }}
               className="relative flex items-center justify-center"
             >
               <div className="absolute inset-0 -z-10 flex items-center justify-center">
-                <div className="w-[70%] h-[70%] rounded-full bg-primary/20 blur-3xl" />
+                <div className="w-[80%] h-[80%] rounded-full bg-primary/25 blur-3xl" />
               </div>
-              <img
-                src={phoneMockup}
-                alt="eventspark previzualizare pe telefon"
-                className="w-full max-w-md lg:max-w-lg object-contain drop-shadow-2xl"
-              />
+              <div className="relative w-full max-w-md lg:max-w-lg rounded-3xl overflow-hidden bg-card shadow-2xl">
+                <img
+                  src={eventSummit}
+                  alt="Previzualizare pagina de inregistrare eventspark"
+                  className="w-full h-64 sm:h-72 object-cover"
+                />
+                <div className="p-6 sm:p-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-semibold text-primary bg-primary/10 px-2.5 py-1 rounded-full">Conferinta</span>
+                    <span className="text-xs text-muted-foreground">Sambata, 19 Apr</span>
+                  </div>
+                  <h3 className="font-display font-bold text-2xl text-foreground tracking-[-0.01em]">
+                    Vibe coding summit 2026
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="h-10 rounded-full bg-muted" />
+                    <div className="h-10 rounded-full bg-muted" />
+                  </div>
+                  <div className="h-11 rounded-full bg-foreground flex items-center justify-center">
+                    <span className="text-sm font-semibold text-background">Inregistreaza-te</span>
+                  </div>
+                </div>
+              </div>
             </motion.div>
           </div>
         </div>
