@@ -299,9 +299,14 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
   );
 }
 
+const navLinks = [
+  { label: "Functionalitati", href: "#features" },
+  { label: "Modele", href: "#models" },
+  { label: "Preturi", href: "#pricing" },
+];
+
 const Landing = () => {
   const [wordIndex, setWordIndex] = useState(0);
-  const [navVisible, setNavVisible] = useState(false);
   const [devOpen, setDevOpen] = useState(false);
   const [titleWeight, setTitleWeight] = useState(700);
   const [confettiSize, setConfettiSize] = useState(2.5);
