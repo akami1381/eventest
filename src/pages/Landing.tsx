@@ -449,7 +449,7 @@ const Landing = () => {
                 <div className="w-[70%] h-[70%] rounded-full bg-primary/20 blur-3xl" />
               </div>
               <img
-                src="/__l5e/assets-v1/1c64b178-2060-498f-8381-cc7434b18f76/phone-mockup-v2.png"
+                src={phoneMockup}
                 alt="eventspark previzualizare pe telefon"
                 className="w-full max-w-md lg:max-w-lg object-contain drop-shadow-2xl"
               />
