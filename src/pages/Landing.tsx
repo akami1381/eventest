@@ -361,15 +361,25 @@ const Landing = () => {
             <Logo size="md" />
           </Link>
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.internal ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  {link.label}
+                </a>
+              ),
+            )}
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" className="text-sm font-medium" asChild>
@@ -395,15 +405,15 @@ const Landing = () => {
               className="text-left"
             >
               <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-6">
-                Gratuit pentru totdeauna
+                Invitatii pentru orice ocazie
               </span>
               <h1
                 className="font-display tracking-[-0.02em] leading-[1.05] text-foreground text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-6"
                 style={{ fontWeight: titleWeight }}
               >
-                The event platform
+                Invitatii frumoase
                 <br />
-                where ideas become{" "}
+                pentru momente{" "}
                 <span className="inline-block relative" style={{ minWidth: "7ch" }}>
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -421,19 +431,19 @@ const Landing = () => {
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
-                Construieste pagini de inregistrare cu brand-ul tau, urmareste participantii si
-                creste-ti comunitatea. Fara cod, fara complicatii.
+                Nunti, botezuri, aniversari sau evenimente corporate — alege un model,
+                personalizeaza-l in cativa pasi si trimite-l invitatilor.
               </p>
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <Button size="lg" className="text-base font-semibold px-8 h-12" asChild>
-                  <Link to="/auth">Creaza invitatie <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                  <Link to="/templates">Rasfoieste modele <ArrowRight className="ml-2 w-4 h-4" /></Link>
                 </Button>
                 <Button size="lg" variant="ghost" className="text-base font-semibold px-6 h-12" asChild>
-                  <a href="#models">Vezi modele</a>
+                  <Link to="/auth?mode=signup">Creeaza cont</Link>
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Fara card. Fara limite. Configurare in 2 minute.
+                Configurare in cativa pasi. RSVP, harti, galerie incluse.
               </p>
             </motion.div>
 
