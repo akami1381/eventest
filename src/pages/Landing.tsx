@@ -300,9 +300,9 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
 }
 
 const navLinks = [
-  { label: "Functionalitati", href: "#features" },
-  { label: "Modele", href: "#models" },
-  { label: "Preturi", href: "#pricing" },
+  { label: "Functionalitati", href: "#features", internal: false },
+  { label: "Modele", href: "/templates", internal: true },
+  { label: "Preturi", href: "#pricing", internal: false },
 ];
 
 const Landing = () => {
