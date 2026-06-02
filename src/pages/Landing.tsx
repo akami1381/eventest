@@ -613,22 +613,23 @@ const Landing = () => {
 
       {/* Pricing — free forever */}
       <section id="pricing" className="py-20 lg:py-28">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
             <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
               Preturi
             </span>
             <h2 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Gratuit pentru totdeauna
+              Plateste o singura data, per invitatie
             </h2>
             <p className="text-muted-foreground mt-4 text-base sm:text-lg">
-              eventspark este 100% gratuit. Fara abonamente, fara comisioane, fara limite ascunse.
+              Fara abonament. Alegi un model, personalizezi si platesti doar pentru evenimentul tau.
+              Preturile finale se confirma in pasul de plata.
             </p>
           </motion.div>
 
@@ -637,30 +638,48 @@ const Landing = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-card shadow-sm p-8 sm:p-10 text-center"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            <div className="flex items-baseline justify-center gap-2 mb-6">
-              <span className="text-6xl font-display font-bold text-foreground tracking-[-0.02em]">0 €</span>
-              <span className="text-muted-foreground">/ pentru totdeauna</span>
-            </div>
-            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-foreground text-left max-w-md mx-auto mb-8">
-              {[
-                "Evenimente nelimitate",
-                "Participanti nelimitati",
-                "Pagini de inscriere personalizate",
-                "Analytics in timp real",
-                "Integrari cu 20+ tool-uri",
-                "Export CSV si QR check-in",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Button size="lg" className="font-semibold" asChild>
-              <Link to="/auth">Creaza invitatie</Link>
-            </Button>
+            {[
+              { name: "Basic", price: "Gratuit", desc: "Pentru a testa platforma.", features: ["Pana la 25 invitati", "1 model la alegere", "RSVP de baza", "Branding eventspark"] },
+              { name: "Standard", price: "29 €", desc: "Pentru majoritatea evenimentelor.", features: ["Pana la 150 invitati", "Toate modelele", "RSVP + meniu + +1", "Fara branding"], featured: true },
+              { name: "Premium", price: "59 €", desc: "Pentru evenimente mari.", features: ["Invitati nelimitati", "Personalizare avansata", "Galerie foto live", "Suport prioritar"] },
+            ].map((tier) => (
+              <div
+                key={tier.name}
+                className={cn(
+                  "rounded-3xl p-8 flex flex-col",
+                  tier.featured ? "bg-foreground text-background" : "bg-card shadow-sm",
+                )}
+              >
+                <h3 className="font-display text-xl tracking-[-0.01em] mb-1">{tier.name}</h3>
+                <p className={cn("text-sm mb-6", tier.featured ? "text-background/70" : "text-muted-foreground")}>
+                  {tier.desc}
+                </p>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl font-display font-bold tracking-[-0.02em]">{tier.price}</span>
+                  {tier.price !== "Gratuit" && (
+                    <span className={cn("text-sm", tier.featured ? "text-background/60" : "text-muted-foreground")}>/ invitatie</span>
+                  )}
+                </div>
+                <ul className="space-y-2 text-sm mb-8 flex-1">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", tier.featured ? "bg-background" : "bg-primary")} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  size="lg"
+                  variant={tier.featured ? "secondary" : "default"}
+                  className="font-semibold w-full"
+                  asChild
+                >
+                  <Link to="/templates">Incepe</Link>
+                </Button>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
