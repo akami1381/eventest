@@ -25,6 +25,7 @@ import eventSummit from "@/assets/event-vibe-coding-summit.jpg";
 import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
 import avatarPriya from "@/assets/avatar-priya.jpg";
+import { POPULAR_TEMPLATES } from "@/data/templates";
 
 
 const features = [
@@ -488,39 +489,45 @@ const Landing = () => {
       {/* Upcoming events showcase */}
       <section id="models" className="py-12 lg:py-16 pb-20 lg:pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Popular events on eventspark
-            </h2>
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+                Modele populare
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Pentru nunti, botezuri, aniversari sau corporate.
+              </p>
+            </div>
+            <Button variant="ghost" className="font-semibold" asChild>
+              <Link to="/templates">
+                Vezi toate modelele <ArrowRight className="ml-1 w-4 h-4" />
+              </Link>
+            </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { img: eventHackathon, title: "AI hackathon", tag: "Free", date: "Sat, Mar 28" },
-              { img: eventChill, title: "Chill code workshop", tag: "Free", date: "Thu, Apr 3" },
-              { img: eventStartup, title: "Startup weekend", tag: "$25", date: "Fri, Apr 11" },
-              { img: eventSummit, title: "Vibe coding summit", tag: "Free", date: "Sat, Apr 19" },
-            ].map((event, i) => (
+            {POPULAR_TEMPLATES.map((t, i) => (
               <motion.div
-                key={event.title}
+                key={t.id}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <div className="group cursor-pointer">
-                  <div className="relative rounded-xl overflow-hidden mb-3">
+                <Link to={`/templates?category=${encodeURIComponent(t.category)}`} className="group block">
+                  <div className="relative rounded-xl overflow-hidden mb-3 aspect-[4/5] bg-muted">
                     <img
-                      src={event.img}
-                      alt={event.title}
-                      className="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-300"
+                      src={t.image}
+                      alt={t.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                     <span className="absolute top-3 left-3 bg-card text-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-                      {event.tag}
+                      {t.category}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{event.date}</p>
-                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{event.title}</h3>
-                </div>
+                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{t.name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-1">{t.tagline}</p>
+                </Link>
               </motion.div>
             ))}
           </div>
