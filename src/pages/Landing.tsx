@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -25,6 +26,7 @@ import eventSummit from "@/assets/event-vibe-coding-summit.jpg";
 import avatarSarah from "@/assets/avatar-sarah.jpg";
 import avatarMarcus from "@/assets/avatar-marcus.jpg";
 import avatarPriya from "@/assets/avatar-priya.jpg";
+import { POPULAR_TEMPLATES } from "@/data/templates";
 
 
 const features = [
@@ -300,9 +302,9 @@ function ConfettiLayer({ size, opacity, count, spread }: { size: number; opacity
 }
 
 const navLinks = [
-  { label: "Functionalitati", href: "#features" },
-  { label: "Modele", href: "#models" },
-  { label: "Preturi", href: "#pricing" },
+  { label: "Functionalitati", href: "#features", internal: false },
+  { label: "Modele", href: "/templates", internal: true },
+  { label: "Preturi", href: "#pricing", internal: false },
 ];
 
 const Landing = () => {
@@ -361,15 +363,25 @@ const Landing = () => {
             <Logo size="md" />
           </Link>
           <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
-              >
-                {link.label}
-              </a>
-            ))}
+            {navLinks.map((link) =>
+              link.internal ? (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  {link.label}
+                </Link>
+              ) : (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
+                >
+                  {link.label}
+                </a>
+              ),
+            )}
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" className="text-sm font-medium" asChild>
@@ -395,15 +407,15 @@ const Landing = () => {
               className="text-left"
             >
               <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-6">
-                Gratuit pentru totdeauna
+                Invitatii pentru orice ocazie
               </span>
               <h1
                 className="font-display tracking-[-0.02em] leading-[1.05] text-foreground text-4xl sm:text-5xl lg:text-6xl xl:text-7xl mb-6"
                 style={{ fontWeight: titleWeight }}
               >
-                The event platform
+                Invitatii frumoase
                 <br />
-                where ideas become{" "}
+                pentru momente{" "}
                 <span className="inline-block relative" style={{ minWidth: "7ch" }}>
                   <AnimatePresence mode="wait">
                     <motion.span
@@ -421,19 +433,19 @@ const Landing = () => {
                 </span>
               </h1>
               <p className="text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed">
-                Construieste pagini de inregistrare cu brand-ul tau, urmareste participantii si
-                creste-ti comunitatea. Fara cod, fara complicatii.
+                Nunti, botezuri, aniversari sau evenimente corporate — alege un model,
+                personalizeaza-l in cativa pasi si trimite-l invitatilor.
               </p>
               <div className="flex flex-wrap items-center gap-3 mb-6">
                 <Button size="lg" className="text-base font-semibold px-8 h-12" asChild>
-                  <Link to="/auth">Creaza invitatie <ArrowRight className="ml-2 w-4 h-4" /></Link>
+                  <Link to="/templates">Rasfoieste modele <ArrowRight className="ml-2 w-4 h-4" /></Link>
                 </Button>
                 <Button size="lg" variant="ghost" className="text-base font-semibold px-6 h-12" asChild>
-                  <a href="#models">Vezi modele</a>
+                  <Link to="/auth?mode=signup">Creeaza cont</Link>
                 </Button>
               </div>
               <p className="text-sm text-muted-foreground">
-                Fara card. Fara limite. Configurare in 2 minute.
+                Configurare in cativa pasi. RSVP, harti, galerie incluse.
               </p>
             </motion.div>
 
@@ -478,39 +490,45 @@ const Landing = () => {
       {/* Upcoming events showcase */}
       <section id="models" className="py-12 lg:py-16 pb-20 lg:pb-28">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-10">
-            <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Popular events on eventspark
-            </h2>
+          <div className="flex flex-wrap items-end justify-between gap-4 mb-10">
+            <div>
+              <h2 className="text-2xl sm:text-3xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
+                Modele populare
+              </h2>
+              <p className="text-muted-foreground mt-2">
+                Pentru nunti, botezuri, aniversari sau corporate.
+              </p>
+            </div>
+            <Button variant="ghost" className="font-semibold" asChild>
+              <Link to="/templates">
+                Vezi toate modelele <ArrowRight className="ml-1 w-4 h-4" />
+              </Link>
+            </Button>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { img: eventHackathon, title: "AI hackathon", tag: "Free", date: "Sat, Mar 28" },
-              { img: eventChill, title: "Chill code workshop", tag: "Free", date: "Thu, Apr 3" },
-              { img: eventStartup, title: "Startup weekend", tag: "$25", date: "Fri, Apr 11" },
-              { img: eventSummit, title: "Vibe coding summit", tag: "Free", date: "Sat, Apr 19" },
-            ].map((event, i) => (
+            {POPULAR_TEMPLATES.map((t, i) => (
               <motion.div
-                key={event.title}
+                key={t.id}
                 initial={{ opacity: 0, y: 24 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: i * 0.1 }}
               >
-                <div className="group cursor-pointer">
-                  <div className="relative rounded-xl overflow-hidden mb-3">
+                <Link to={`/templates?category=${encodeURIComponent(t.category)}`} className="group block">
+                  <div className="relative rounded-xl overflow-hidden mb-3 aspect-[4/5] bg-muted">
                     <img
-                      src={event.img}
-                      alt={event.title}
-                      className="w-full h-[180px] object-cover group-hover:scale-105 transition-transform duration-300"
+                      src={t.image}
+                      alt={t.name}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      loading="lazy"
                     />
                     <span className="absolute top-3 left-3 bg-card text-foreground text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
-                      {event.tag}
+                      {t.category}
                     </span>
                   </div>
-                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wide mb-1">{event.date}</p>
-                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{event.title}</h3>
-                </div>
+                  <h3 className="font-display font-semibold text-foreground group-hover:text-primary transition-colors tracking-[-0.01em]">{t.name}</h3>
+                  <p className="text-sm text-muted-foreground line-clamp-1">{t.tagline}</p>
+                </Link>
               </motion.div>
             ))}
           </div>
@@ -596,22 +614,23 @@ const Landing = () => {
 
       {/* Pricing — free forever */}
       <section id="pricing" className="py-20 lg:py-28">
-        <div className="max-w-3xl mx-auto px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-10"
+            className="text-center mb-12"
           >
             <span className="inline-block text-xs font-semibold uppercase tracking-wide text-primary bg-primary/10 px-3 py-1 rounded-full mb-4">
               Preturi
             </span>
             <h2 className="text-3xl sm:text-4xl font-display text-foreground tracking-[-0.02em]" style={{ fontWeight: titleWeight }}>
-              Gratuit pentru totdeauna
+              Plateste o singura data, per invitatie
             </h2>
             <p className="text-muted-foreground mt-4 text-base sm:text-lg">
-              eventspark este 100% gratuit. Fara abonamente, fara comisioane, fara limite ascunse.
+              Fara abonament. Alegi un model, personalizezi si platesti doar pentru evenimentul tau.
+              Preturile finale se confirma in pasul de plata.
             </p>
           </motion.div>
 
@@ -620,30 +639,48 @@ const Landing = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="rounded-3xl bg-card shadow-sm p-8 sm:p-10 text-center"
+            className="grid grid-cols-1 md:grid-cols-3 gap-6"
           >
-            <div className="flex items-baseline justify-center gap-2 mb-6">
-              <span className="text-6xl font-display font-bold text-foreground tracking-[-0.02em]">0 €</span>
-              <span className="text-muted-foreground">/ pentru totdeauna</span>
-            </div>
-            <ul className="grid sm:grid-cols-2 gap-3 text-sm text-foreground text-left max-w-md mx-auto mb-8">
-              {[
-                "Evenimente nelimitate",
-                "Participanti nelimitati",
-                "Pagini de inscriere personalizate",
-                "Analytics in timp real",
-                "Integrari cu 20+ tool-uri",
-                "Export CSV si QR check-in",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <Button size="lg" className="font-semibold" asChild>
-              <Link to="/auth">Creaza invitatie</Link>
-            </Button>
+            {[
+              { name: "Basic", price: "Gratuit", desc: "Pentru a testa platforma.", features: ["Pana la 25 invitati", "1 model la alegere", "RSVP de baza", "Branding eventspark"] },
+              { name: "Standard", price: "29 €", desc: "Pentru majoritatea evenimentelor.", features: ["Pana la 150 invitati", "Toate modelele", "RSVP + meniu + +1", "Fara branding"], featured: true },
+              { name: "Premium", price: "59 €", desc: "Pentru evenimente mari.", features: ["Invitati nelimitati", "Personalizare avansata", "Galerie foto live", "Suport prioritar"] },
+            ].map((tier) => (
+              <div
+                key={tier.name}
+                className={cn(
+                  "rounded-3xl p-8 flex flex-col",
+                  tier.featured ? "bg-foreground text-background" : "bg-card shadow-sm",
+                )}
+              >
+                <h3 className="font-display text-xl tracking-[-0.01em] mb-1">{tier.name}</h3>
+                <p className={cn("text-sm mb-6", tier.featured ? "text-background/70" : "text-muted-foreground")}>
+                  {tier.desc}
+                </p>
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl font-display font-bold tracking-[-0.02em]">{tier.price}</span>
+                  {tier.price !== "Gratuit" && (
+                    <span className={cn("text-sm", tier.featured ? "text-background/60" : "text-muted-foreground")}>/ invitatie</span>
+                  )}
+                </div>
+                <ul className="space-y-2 text-sm mb-8 flex-1">
+                  {tier.features.map((f) => (
+                    <li key={f} className="flex items-center gap-2">
+                      <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", tier.featured ? "bg-background" : "bg-primary")} />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Button
+                  size="lg"
+                  variant={tier.featured ? "secondary" : "default"}
+                  className="font-semibold w-full"
+                  asChild
+                >
+                  <Link to="/templates">Incepe</Link>
+                </Button>
+              </div>
+            ))}
           </motion.div>
         </div>
       </section>
