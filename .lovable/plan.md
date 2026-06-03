@@ -1,67 +1,89 @@
+# Etapa 1.5 + Etapa 2 — Preview live + Wizard multi-step
 
-# Pivot: eventspark → platformă de invitații
+## Partea A — Preview cu câmpuri editabile (toate modelele)
 
-Schimbare majoră de scope. Recomand să livrăm în **3 etape separate** (fiecare în câte un loop), ca să putem testa pe parcurs și să nu spargem ce funcționează.
+Înlocuiesc dialog-ul actual din `/templates` (care arată doar o poză) cu un **preview interactiv**: în stânga formular cu câmpuri editabile, în dreapta randarea live a invitației.
 
----
+**Componentă nouă `InvitationRenderer`** care primește `{ template, category, data }` și randează:
+- `minimal` — centrat, tipografic
+- `split` — imagine stânga / detalii dreapta
+- `landing` — hero cu overlay
+- (extensibil pentru viitoarele layout-uri florale, pastel etc.)
 
-## Etapa 1 — Landing + Catalog de modele (UI only)
+**Câmpuri editabile** (subset comun, restul ascuns sub "Mai multe"):
+- Titlu, Subtitlu, Data + Ora, Locație, Mesaj/Descriere, Nume sărbătoriți (pentru wedding/baptize), Culoare accent.
 
-Scop: aspect "Paperless Post" pentru landing și pagina de modele. Fără logică nouă de DB.
+Folosit în 3 locuri:
+1. Modal preview din `/templates` (read-only feel, dar editabil ca demo)
+2. Wizard (etapa 2) — preview live lângă fiecare pas
+3. Pagina publică a invitației (viitor)
 
-1. **Landing hero**
-   - Elimin eyebrow "Gratuit pentru totdeauna".
-   - Înlocuiesc textul subliniei cu unul orientat pe invitații (nuntă, botez, aniversare, corporate).
-   - CTA principal: "Răsfoiește modele" → `/templates`. CTA secundar: "Creează cont".
+## Partea B — Wizard multi-step pe categorii
 
-2. **Pagină nouă `/templates`** (catalog public)
-   - Tabs categorii orizontale, pill-shape: **All, Birthday, Wedding, Business, Celebration, Holiday, Baptize, Wedding + Baptize**.
-   - Grid de carduri model (imagine flyer + titlu + categorie).
-   - Două butoane pe card: **"Previzualizează"** (deschide modal/route `/templates/:id/preview` cu invitația randată full-screen) și **"Folosește acest model"** (→ `/auth?mode=signup&template=:id` dacă neautentificat, altfel → wizard).
-   - Secțiunea "Modele populare" de pe landing devine un teaser scurt (3-4 carduri) cu link "Vezi toate modelele".
+**Rută nouă**: `/dashboard/invitations/new?template=:id` (înlocuiește `events/create` pentru fluxul nou; cel vechi rămâne pentru evenimente "registration").
 
-3. **Update memorie**
-   - Elimin constraint-ul `mem://business/pricing-model` "strictly free".
-   - Actualizez `mem://index.md` (Core + lista templates extinsă).
-   - Adaug `mem://features/template-catalog`.
+**Pași Wedding & Wedding+Baptize** (7):
+1. Informații generale (titlu, mesaj de bun-venit, dată)
+2. Detalii sărbătoriți (nume miri / nași / părinți / nou-născut)
+3. Locații (ceremonie religioasă + petrecere — fiecare cu adresă, oră, hartă)
+4. Personalizare avansată (culoare accent, font, imagine fundal, secțiuni on/off: program, dress code, cadouri, galerie)
+5. Tip invitație (Basic / Standard / Premium — descrise mai jos)
+6. Setări invitați (RSVP da/nu, +1, meniu, deadline confirmare, mesaj custom)
+7. Plată (sumar + checkout; deocamdată buton "Continuă" inactiv → vine în Etapa 3)
 
-**Notă:** modelele rămân deocamdată cele 3 existente (Minimal, Split, Landing), dar le **etichetez pe categorii** și pregătesc structura. Adăugarea de design-uri noi (wedding floral, baptize pastel etc.) o facem în Etapa 2 sau separat — fiecare design costă timp.
+**Pași Baptize** (6): 1-Info, 2-Detalii copil & nași, 3-Locații, 4-Personalizare, 5-Tip, 6-Setări invitați, 7-Plată.
 
----
-
-## Etapa 2 — Wizard multi-step pe categorie
-
-Scop: înlocuiesc wizardul actual de 3 pași cu unul pe categorii. Încep cu **Wedding** (cel mai cerut), apoi clonăm pentru restul.
-
-Pași Wedding (conform cererii):
+**Pași Birthday / Celebration / Holiday / Business** (5):
 1. Informații generale
-2. Detalii sărbătoriți
-3. Locații (ceremonie + petrecere)
-4. Personalizare avansată
-5. Tip invitație + plată (alegere variantă)
-6. Setări invitați (RSVP, +1, meniu, etc.)
-7. Plată finală
+2. Locație
+3. Personalizare
+4. Tip invitație + setări invitați (combinat)
+5. Plată
 
-**DB**: extind `events` cu coloane noi (`category`, `celebrants jsonb`, `locations jsonb`, `invitation_tier`, `guest_settings jsonb`, `payment_status`). Migrație separată.
+**Layout wizard**:
+- Stânga (lg:1/2): header cu progres pill + numele pasului, formular, butoane "Înapoi"/"Continuă".
+- Dreapta (lg:1/2, sticky): `InvitationRenderer` live cu datele introduse.
+- Mobil: preview deasupra într-un accordion "Vezi previzualizare".
 
-Pași minimali pentru celelalte categorii (Birthday/Business/Celebration/Holiday/Baptize) — schemă similară redusă.
+**State**: `useReducer` local + `localStorage` (`invitation-draft-${templateId}`) ca să nu piardă datele. Salvarea finală în DB vine în Etapa 2.5 (după ce extindem schema `events`).
 
----
+## Partea C — DB (Etapa 2.5, separat — DOAR dacă spui ok)
 
-## Etapa 3 — Plată
+Nu fac migrație în acest loop. Voi propune separat:
+```
+ALTER TABLE events ADD COLUMN category text,
+  ADD COLUMN celebrants jsonb DEFAULT '[]',
+  ADD COLUMN locations jsonb DEFAULT '[]',
+  ADD COLUMN invitation_tier text,
+  ADD COLUMN guest_settings jsonb DEFAULT '{}',
+  ADD COLUMN payment_status text DEFAULT 'unpaid';
+```
 
-Scop: monetizare. Recomand **Stripe seamless** (`enable_stripe_payments`) — produs digital, fără cont propriu necesar, suportă tax handling. Paddle e și el ok dar are review mai strict.
+## Fișiere
 
-- 2-3 tier-uri (ex: Basic gratuit cu watermark / Standard / Premium fără watermark + mai mulți invitați).
-- Logica: la pasul 7 din wizard → checkout session Stripe → webhook actualizează `payment_status` → publicare invitație.
-- Necesită upgrade la **Pro plan** Lovable și activare Lovable Cloud (deja activ).
+**Noi**:
+- `src/components/invitation/InvitationRenderer.tsx` — randare pe layout
+- `src/components/invitation/InvitationPreviewEditor.tsx` — split form+preview pentru modal
+- `src/components/invitation/types.ts` — `InvitationData`, defaults pe categorie
+- `src/components/wizard/WizardShell.tsx` — layout + progres + nav
+- `src/components/wizard/steps/*` — un fișier per pas (GeneralInfoStep, CelebrantsStep, LocationsStep, CustomizationStep, InvitationTierStep, GuestSettingsStep, PaymentStep)
+- `src/pages/dashboard/InvitationWizard.tsx` — alege configurarea de pași în funcție de `category`
+- `src/data/wizardConfigs.ts` — mapare `category → steps[]`
 
-Vom decide tier-urile concret în Etapa 3.
+**Modificate**:
+- `src/pages/Templates.tsx` — modalul folosește `InvitationPreviewEditor`
+- `src/App.tsx` — rută nouă `/dashboard/invitations/new`
+- `src/data/templates.ts` — adaug `defaultData` pe template (titluri demo realiste)
+- `mem://features/template-catalog` — actualizez să menționez preview interactiv
+- `mem://features/event-wizard` → înlocuit cu `mem://features/invitation-wizard`
 
----
+## Ce NU fac în acest loop
+- Plata Stripe (Etapa 3)
+- Migrația DB (Etapa 2.5)
+- Layout-uri vizuale noi (floral, pastel) — folosim cele 3 existente, dar cu mai multe variante de culoare
+- Pagina publică a invitației (vine după ce salvăm în DB)
 
-## Recomandare
-
-Începem cu **Etapa 1** (cea mai vizibilă, fără risc DB). După ce o validezi, trec la Etapa 2.
-
-**Confirmă** dacă ești ok cu planul și începem cu Etapa 1, sau spune-mi dacă vrei să schimb ordinea / scope-ul.
+## Confirmare necesară
+1. Ok cu cele 7/6/5 pași pe categorii? Vrei să unific totul la un singur set de pași?
+2. Pentru Tip invitație — Basic / Standard / Premium ca în pricing-ul de pe landing, ok? Sau alte denumiri?
+3. Salvăm draft-ul doar în localStorage acum (rapid) sau aștepți migrația DB și salvăm direct în Supabase (mai sigur, dar mai mult de muncă)?
