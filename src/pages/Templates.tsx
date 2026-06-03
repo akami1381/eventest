@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Eye, X } from "lucide-react";
+import { Eye } from "lucide-react";
 
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
@@ -14,6 +14,7 @@ import {
   type Template,
   type TemplateCategory,
 } from "@/data/templates";
+import { InvitationPreviewEditor } from "@/components/invitation/InvitationPreviewEditor";
 
 const navLinks = [
   { label: "Functionalitati", href: "/#features" },
