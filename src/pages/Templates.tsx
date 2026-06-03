@@ -199,57 +199,16 @@ export default function Templates() {
 
       {/* Preview dialog */}
       <Dialog open={!!previewing} onOpenChange={(o) => !o && setPreviewing(null)}>
-        <DialogContent className="max-w-3xl p-0 overflow-hidden">
+        <DialogContent className="max-w-5xl p-0 overflow-hidden">
           {previewing && (
-            <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="relative bg-muted aspect-[4/5] md:aspect-auto">
-                <img
-                  src={previewing.image}
-                  alt={previewing.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="p-8 flex flex-col">
-                <span
-                  className="self-start text-xs font-semibold uppercase tracking-wide px-3 py-1 rounded-full mb-4"
-                  style={{ backgroundColor: `${previewing.accent}22`, color: previewing.accent }}
-                >
-                  {previewing.category}
-                </span>
-                <h2 className="font-display text-3xl text-foreground tracking-[-0.02em] mb-3">
-                  {previewing.name}
-                </h2>
-                <p className="text-muted-foreground mb-6">{previewing.tagline}</p>
-                <ul className="space-y-2 text-sm text-foreground mb-8">
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    Layout: {previewing.layout}
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    Personalizare completa in 7 pasi
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                    RSVP, harti, galerie
-                  </li>
-                </ul>
-                <div className="mt-auto flex gap-2">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => setPreviewing(null)}
-                  >
-                    <X className="w-4 h-4" />
-                    Inchide
-                  </Button>
-                  <Button className="flex-1" onClick={() => useTemplate(previewing)}>
-                    Foloseste acest model
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <InvitationPreviewEditor
+              template={previewing}
+              onUse={() => {
+                const t = previewing;
+                setPreviewing(null);
+                useTemplate(t);
+              }}
+            />
           )}
         </DialogContent>
       </Dialog>
