@@ -403,6 +403,10 @@ export default function InvitationWizard() {
   return (
     <div className="min-h-[calc(100vh-72px)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+        {/* Journey */}
+        <div className="mb-8">
+          <JourneyStepper active={journeyPhase} />
+        </div>
         {/* Header */}
         <div className="mb-6 flex items-center justify-between gap-3">
           <div className="min-w-0">
