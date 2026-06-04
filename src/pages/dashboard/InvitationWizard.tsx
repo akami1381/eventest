@@ -56,10 +56,7 @@ export default function InvitationWizard() {
   const templateId = params.get("template");
   const template = useMemo(() => TEMPLATES.find((t) => t.id === templateId), [templateId]);
 
-  const steps = useMemo(
-    () => (template ? getStepsForCategory(template.category) : []),
-    [template],
-  );
+  const [paid, setPaid] = useState(false);
   const [stepIdx, setStepIdx] = useState(0);
   const draftKey = template ? `invitation-draft-${template.id}` : "";
 
