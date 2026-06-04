@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, Eye } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, Mail, MessageCircle, Link2, PartyPopper } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { TEMPLATES } from "@/data/templates";
+import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateCategory } from "@/data/templates";
 import { getStepsForCategory, type StepId } from "@/data/wizardConfigs";
 import { InvitationRenderer } from "@/components/invitation/InvitationRenderer";
 import { InvitationFields } from "@/components/invitation/InvitationFields";
