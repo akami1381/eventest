@@ -109,6 +109,27 @@ export default function InvitationWizard() {
         return (
           <div className="space-y-5">
             <div className="space-y-2">
+              <Label>Event type</Label>
+              <Select
+                value={data.category}
+                onValueChange={(v) => {
+                  const newCat = v as Exclude<TemplateCategory, "All">;
+                  patch({ category: newCat });
+                  setStepIdx(0);
+                }}
+              >
+                <SelectTrigger className="rounded-full h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TEMPLATE_CATEGORIES.filter((c) => c !== "All").map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">Schimbarea tipului ajustează pașii invitației.</p>
+            </div>
+            <div className="space-y-2">
               <Label>Titlu invitație</Label>
               <Input value={data.title} onChange={(e) => patch({ title: e.target.value })} />
             </div>
