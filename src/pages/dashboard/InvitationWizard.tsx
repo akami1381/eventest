@@ -22,6 +22,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { JourneyStepper, type JourneyPhase } from "@/components/JourneyStepper";
 
 const TIERS: { id: InvitationData["tier"]; name: string; price: string; perks: string[] }[] = [
   {
