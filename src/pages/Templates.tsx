@@ -6,7 +6,7 @@ import { Eye } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
+
 import { cn } from "@/lib/utils";
 import {
   TEMPLATES,
