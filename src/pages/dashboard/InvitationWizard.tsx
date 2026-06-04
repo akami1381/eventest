@@ -303,12 +303,63 @@ export default function InvitationWizard() {
         );
       case "payment": {
         const tier = TIERS.find((t) => t.id === data.tier)!;
+        if (paid) {
+          const shareUrl = `${window.location.origin}/invitation/${template.id}`;
+          const shareText = `${data.title} — ${data.subtitle}`;
+          const copy = async () => {
+            await navigator.clipboard.writeText(shareUrl);
+            toast({ title: "Link copiat", description: shareUrl });
+          };
+          return (
+            <div className="space-y-6">
+              <div className="p-6 rounded-2xl bg-muted/40 text-center space-y-2">
+                <div className="inline-flex w-12 h-12 items-center justify-center rounded-full bg-foreground text-background">
+                  <PartyPopper className="w-6 h-6" />
+                </div>
+                <h3 className="font-display text-2xl tracking-[-0.02em]">Invitația ta este gata!</h3>
+                <p className="text-sm text-muted-foreground">
+                  Trimite-o invitaților prin canalele preferate sau intră în dashboard pentru analitice.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                </a>
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(shareUrl)}`}
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <Mail className="w-4 h-4" /> Email
+                </a>
+                <button
+                  type="button"
+                  onClick={copy}
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <Link2 className="w-4 h-4" /> Copiază link
+                </button>
+              </div>
+              <Button onClick={() => navigate("/dashboard/events")} className="w-full font-semibold">
+                Mergi la dashboard <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          );
+        }
         return (
           <div className="space-y-5">
             <div className="p-5 rounded-2xl bg-muted/40 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Model</span>
                 <span className="font-medium">{template.name}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Tip eveniment</span>
+                <span className="font-medium">{data.category}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Pachet</span>
@@ -320,11 +371,16 @@ export default function InvitationWizard() {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Plata online se activează în curând. Până atunci, salvăm draft-ul invitației tale.
+              Vei putea să te loghezi sau să creezi cont chiar înainte de plată. Plata securizată vine în curând.
             </p>
-            <Button className="w-full font-semibold" disabled>
-              Continuă către plată
-              <ArrowRight className="w-4 h-4" />
+            <Button
+              className="w-full font-semibold"
+              onClick={() => {
+                setPaid(true);
+                toast({ title: "Plată confirmată", description: "Invitația ta este activă." });
+              }}
+            >
+              Logare & plată <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         );
