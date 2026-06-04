@@ -96,7 +96,8 @@ export default function InvitationWizard() {
     );
   }
 
-  const step = steps[stepIdx];
+  const steps = getStepsForCategory(data.category ?? template.category);
+  const step = steps[Math.min(stepIdx, steps.length - 1)];
   const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLast = stepIdx === steps.length - 1;
 
