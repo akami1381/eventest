@@ -10,6 +10,7 @@ export type InvitationLocation = {
 };
 
 export type InvitationData = {
+  category: Exclude<TemplateCategory, "All">;
   title: string;
   subtitle: string;
   message: string;
