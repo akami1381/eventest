@@ -15,6 +15,7 @@ import {
   type TemplateCategory,
 } from "@/data/templates";
 import { InvitationPreviewEditor } from "@/components/invitation/InvitationPreviewEditor";
+import { JourneyStepper } from "@/components/JourneyStepper";
 
 const navLinks = [
   { label: "Functionalitati", href: "/#features" },
