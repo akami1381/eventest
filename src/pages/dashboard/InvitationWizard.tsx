@@ -101,6 +101,8 @@ export default function InvitationWizard() {
   const step = steps[Math.min(stepIdx, steps.length - 1)];
   const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLast = stepIdx === steps.length - 1;
+  const journeyPhase: JourneyPhase =
+    step.id === "payment" ? (paid ? "send" : "pay") : "customize";
 
   const patch = (p: Partial<InvitationData>) => dispatch({ type: "patch", patch: p });
 
