@@ -42,8 +42,7 @@ export default function Templates() {
   };
 
   const useTemplate = (t: Template) => {
-    if (user) navigate(`/dashboard/events/create?template=${t.id}`);
-    else navigate(`/auth?mode=signup&template=${t.id}`);
+    navigate(`/invitations/new?template=${t.id}`);
   };
 
   return (
