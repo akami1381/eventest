@@ -6,7 +6,7 @@ import { Eye } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { useAuth } from "@/contexts/AuthContext";
+
 import { cn } from "@/lib/utils";
 import {
   TEMPLATES,
@@ -15,6 +15,7 @@ import {
   type TemplateCategory,
 } from "@/data/templates";
 import { InvitationPreviewEditor } from "@/components/invitation/InvitationPreviewEditor";
+import { JourneyStepper } from "@/components/JourneyStepper";
 
 const navLinks = [
   { label: "Functionalitati", href: "/#features" },
@@ -27,7 +28,7 @@ export default function Templates() {
   const activeCategory = (params.get("category") as TemplateCategory) ?? "All";
   const [previewing, setPreviewing] = useState<Template | null>(null);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  
 
   const filtered = useMemo(() => {
     if (activeCategory === "All") return TEMPLATES;
@@ -42,8 +43,7 @@ export default function Templates() {
   };
 
   const useTemplate = (t: Template) => {
-    if (user) navigate(`/dashboard/events/create?template=${t.id}`);
-    else navigate(`/auth?mode=signup&template=${t.id}`);
+    navigate(`/invitations/new?template=${t.id}`);
   };
 
   return (
@@ -86,10 +86,11 @@ export default function Templates() {
           <h1 className="font-display tracking-[-0.02em] text-foreground text-4xl sm:text-5xl lg:text-6xl mb-4">
             Modele de invitatii
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-lg text-muted-foreground max-w-2xl mb-8">
             Alege un design, previzualizeaza-l si personalizeaza-l in cativa pasi.
             De la nunti si botezuri pana la evenimente corporate.
           </p>
+          <JourneyStepper active="choose" />
         </motion.div>
       </section>
 

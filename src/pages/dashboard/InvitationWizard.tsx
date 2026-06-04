@@ -22,6 +22,7 @@ import {
   SheetContent,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { JourneyStepper, type JourneyPhase } from "@/components/JourneyStepper";
 
 const TIERS: { id: InvitationData["tier"]; name: string; price: string; perks: string[] }[] = [
   {
@@ -100,6 +101,8 @@ export default function InvitationWizard() {
   const step = steps[Math.min(stepIdx, steps.length - 1)];
   const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLast = stepIdx === steps.length - 1;
+  const journeyPhase: JourneyPhase =
+    step.id === "payment" ? (paid ? "send" : "pay") : "customize";
 
   const patch = (p: Partial<InvitationData>) => dispatch({ type: "patch", patch: p });
 
@@ -402,6 +405,10 @@ export default function InvitationWizard() {
   return (
     <div className="min-h-[calc(100vh-72px)]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
+        {/* Journey */}
+        <div className="mb-8">
+          <JourneyStepper active={journeyPhase} />
+        </div>
         {/* Header */}
         <div className="mb-6 flex items-center justify-between gap-3">
           <div className="min-w-0">

@@ -47,6 +47,7 @@ const App = () => (
               {/* Public */}
               <Route path="/" element={<Landing />} />
               <Route path="/templates" element={<Templates />} />
+              <Route path="/invitations/new" element={<InvitationWizard />} />
               <Route path="/auth" element={<Auth />} />
               <Route path="/register/:slug" element={<Register />} />
               <Route path="/company/:companySlug" element={<CompanyPage />} />
