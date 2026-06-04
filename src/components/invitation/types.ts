@@ -37,6 +37,7 @@ export type InvitationData = {
 };
 
 const baseDefaults: InvitationData = {
+  category: "Celebration",
   title: "Te invităm la sărbătoarea noastră",
   subtitle: "Un moment special, alături de cei dragi",
   message: "Cu drag, vă așteptăm să fim împreună într-o zi de neuitat.",
