@@ -64,11 +64,11 @@ export function defaultDataFor(
   accent?: string,
 ): InvitationData {
   const accentColor = accent ?? baseDefaults.accent;
+  const withCategory = { ...baseDefaults, category, accent: accentColor };
+  const apply = (overrides: Partial<InvitationData>) => ({ ...withCategory, ...overrides });
   switch (category) {
     case "Wedding":
-      return {
-        ...baseDefaults,
-        accent: accentColor,
+      return apply({
         title: "Ne căsătorim!",
         subtitle: "Maria & Andrei",
         message: "Dacă dragostea e cea care alege, vă invităm să sărbătoriți alături de noi.",
