@@ -86,10 +86,11 @@ export default function Templates() {
           <h1 className="font-display tracking-[-0.02em] text-foreground text-4xl sm:text-5xl lg:text-6xl mb-4">
             Modele de invitatii
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
+          <p className="text-lg text-muted-foreground max-w-2xl mb-8">
             Alege un design, previzualizeaza-l si personalizeaza-l in cativa pasi.
             De la nunti si botezuri pana la evenimente corporate.
           </p>
+          <JourneyStepper active="choose" />
         </motion.div>
       </section>
 
