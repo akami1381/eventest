@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, Eye } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Eye, Mail, MessageCircle, Link2, PartyPopper } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { Button } from "@/components/ui/button";
@@ -9,8 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { TEMPLATES } from "@/data/templates";
+import { TEMPLATES, TEMPLATE_CATEGORIES, type TemplateCategory } from "@/data/templates";
 import { getStepsForCategory, type StepId } from "@/data/wizardConfigs";
 import { InvitationRenderer } from "@/components/invitation/InvitationRenderer";
 import { InvitationFields } from "@/components/invitation/InvitationFields";
@@ -54,10 +56,7 @@ export default function InvitationWizard() {
   const templateId = params.get("template");
   const template = useMemo(() => TEMPLATES.find((t) => t.id === templateId), [templateId]);
 
-  const steps = useMemo(
-    () => (template ? getStepsForCategory(template.category) : []),
-    [template],
-  );
+  const [paid, setPaid] = useState(false);
   const [stepIdx, setStepIdx] = useState(0);
   const draftKey = template ? `invitation-draft-${template.id}` : "";
 
@@ -97,7 +96,8 @@ export default function InvitationWizard() {
     );
   }
 
-  const step = steps[stepIdx];
+  const steps = getStepsForCategory(data.category ?? template.category);
+  const step = steps[Math.min(stepIdx, steps.length - 1)];
   const progress = ((stepIdx + 1) / steps.length) * 100;
   const isLast = stepIdx === steps.length - 1;
 
@@ -108,6 +108,27 @@ export default function InvitationWizard() {
       case "general":
         return (
           <div className="space-y-5">
+            <div className="space-y-2">
+              <Label>Event type</Label>
+              <Select
+                value={data.category}
+                onValueChange={(v) => {
+                  const newCat = v as Exclude<TemplateCategory, "All">;
+                  patch({ category: newCat });
+                  setStepIdx(0);
+                }}
+              >
+                <SelectTrigger className="rounded-full h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {TEMPLATE_CATEGORIES.filter((c) => c !== "All").map((c) => (
+                    <SelectItem key={c} value={c}>{c}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="text-xs text-muted-foreground">Schimbarea tipului ajustează pașii invitației.</p>
+            </div>
             <div className="space-y-2">
               <Label>Titlu invitație</Label>
               <Input value={data.title} onChange={(e) => patch({ title: e.target.value })} />
@@ -282,12 +303,63 @@ export default function InvitationWizard() {
         );
       case "payment": {
         const tier = TIERS.find((t) => t.id === data.tier)!;
+        if (paid) {
+          const shareUrl = `${window.location.origin}/invitation/${template.id}`;
+          const shareText = `${data.title} — ${data.subtitle}`;
+          const copy = async () => {
+            await navigator.clipboard.writeText(shareUrl);
+            toast({ title: "Link copiat", description: shareUrl });
+          };
+          return (
+            <div className="space-y-6">
+              <div className="p-6 rounded-2xl bg-muted/40 text-center space-y-2">
+                <div className="inline-flex w-12 h-12 items-center justify-center rounded-full bg-foreground text-background">
+                  <PartyPopper className="w-6 h-6" />
+                </div>
+                <h3 className="font-display text-2xl tracking-[-0.02em]">Invitația ta este gata!</h3>
+                <p className="text-sm text-muted-foreground">
+                  Trimite-o invitaților prin canalele preferate sau intră în dashboard pentru analitice.
+                </p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <a
+                  href={`https://wa.me/?text=${encodeURIComponent(shareText + " " + shareUrl)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <MessageCircle className="w-4 h-4" /> WhatsApp
+                </a>
+                <a
+                  href={`mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(shareUrl)}`}
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <Mail className="w-4 h-4" /> Email
+                </a>
+                <button
+                  type="button"
+                  onClick={copy}
+                  className="flex items-center justify-center gap-2 h-12 rounded-full bg-muted hover:bg-muted/70 transition-colors text-sm font-medium"
+                >
+                  <Link2 className="w-4 h-4" /> Copiază link
+                </button>
+              </div>
+              <Button onClick={() => navigate("/dashboard/events")} className="w-full font-semibold">
+                Mergi la dashboard <ArrowRight className="w-4 h-4" />
+              </Button>
+            </div>
+          );
+        }
         return (
           <div className="space-y-5">
             <div className="p-5 rounded-2xl bg-muted/40 space-y-3">
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Model</span>
                 <span className="font-medium">{template.name}</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-muted-foreground">Tip eveniment</span>
+                <span className="font-medium">{data.category}</span>
               </div>
               <div className="flex items-center justify-between">
                 <span className="text-sm text-muted-foreground">Pachet</span>
@@ -299,11 +371,16 @@ export default function InvitationWizard() {
               </div>
             </div>
             <p className="text-sm text-muted-foreground">
-              Plata online se activează în curând. Până atunci, salvăm draft-ul invitației tale.
+              Vei putea să te loghezi sau să creezi cont chiar înainte de plată. Plata securizată vine în curând.
             </p>
-            <Button className="w-full font-semibold" disabled>
-              Continuă către plată
-              <ArrowRight className="w-4 h-4" />
+            <Button
+              className="w-full font-semibold"
+              onClick={() => {
+                setPaid(true);
+                toast({ title: "Plată confirmată", description: "Invitația ta este activă." });
+              }}
+            >
+              Logare & plată <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         );

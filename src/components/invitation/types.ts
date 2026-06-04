@@ -10,6 +10,7 @@ export type InvitationLocation = {
 };
 
 export type InvitationData = {
+  category: Exclude<TemplateCategory, "All">;
   title: string;
   subtitle: string;
   message: string;
@@ -36,6 +37,7 @@ export type InvitationData = {
 };
 
 const baseDefaults: InvitationData = {
+  category: "Celebration",
   title: "Te invităm la sărbătoarea noastră",
   subtitle: "Un moment special, alături de cei dragi",
   message: "Cu drag, vă așteptăm să fim împreună într-o zi de neuitat.",
@@ -62,11 +64,11 @@ export function defaultDataFor(
   accent?: string,
 ): InvitationData {
   const accentColor = accent ?? baseDefaults.accent;
+  const base = { ...baseDefaults, category, accent: accentColor };
   switch (category) {
     case "Wedding":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Ne căsătorim!",
         subtitle: "Maria & Andrei",
         message: "Dacă dragostea e cea care alege, vă invităm să sărbătoriți alături de noi.",
@@ -82,8 +84,7 @@ export function defaultDataFor(
       };
     case "Wedding + Baptize":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Nuntă și botez",
         subtitle: "Familia Popescu",
         message: "O sărbătoare, două motive. Vă invităm cu drag.",
@@ -100,8 +101,7 @@ export function defaultDataFor(
       };
     case "Baptize":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Botezul nostru",
         subtitle: "Sofia",
         message: "Vino să sărbătorim prima zi mare din viața micuței noastre.",
@@ -117,8 +117,7 @@ export function defaultDataFor(
       };
     case "Birthday":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Hai la petrecere!",
         subtitle: "Sărbătorim împreună",
         message: "Te aștept cu tort, muzică și voie bună.",
@@ -126,8 +125,7 @@ export function defaultDataFor(
       };
     case "Business":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Eveniment Corporate",
         subtitle: "Conferință anuală",
         message: "Vă invităm la cea mai importantă întâlnire a anului.",
@@ -135,21 +133,19 @@ export function defaultDataFor(
       };
     case "Celebration":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Sărbătoare specială",
         subtitle: "Aniversare",
         message: "Marcăm un moment important. Te așteptăm.",
       };
     case "Holiday":
       return {
-        ...baseDefaults,
-        accent: accentColor,
+        ...base,
         title: "Sărbători fericite!",
         subtitle: "Petrecerea de sezon",
         message: "Vino să marcăm sărbătorile împreună.",
       };
     default:
-      return { ...baseDefaults, accent: accentColor };
+      return base;
   }
 }
