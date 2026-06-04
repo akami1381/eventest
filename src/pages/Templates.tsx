@@ -28,7 +28,7 @@ export default function Templates() {
   const activeCategory = (params.get("category") as TemplateCategory) ?? "All";
   const [previewing, setPreviewing] = useState<Template | null>(null);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  
 
   const filtered = useMemo(() => {
     if (activeCategory === "All") return TEMPLATES;
