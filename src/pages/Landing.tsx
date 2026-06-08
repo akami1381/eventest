@@ -355,44 +355,7 @@ const Landing = () => {
   }, [titleWeight]);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden pt-[72px]">
-      {/* Persistent navbar */}
-      <nav className="fixed top-0 left-0 right-0 w-full z-50 bg-background/90 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto flex items-center justify-between h-[72px] px-6 lg:px-8">
-          <Link to="/">
-            <Logo size="md" />
-          </Link>
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) =>
-              link.internal ? (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
-                >
-                  {link.label}
-                </Link>
-              ) : (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="px-4 py-2 text-sm font-medium text-muted-foreground rounded-full hover:text-foreground hover:bg-muted transition-colors"
-                >
-                  {link.label}
-                </a>
-              ),
-            )}
-          </div>
-          <div className="flex items-center gap-2">
-            <Button variant="ghost" className="text-sm font-medium" asChild>
-              <Link to="/auth">Intra in cont</Link>
-            </Button>
-            <Button className="hidden sm:inline-flex text-sm font-semibold" asChild>
-              <Link to="/auth">Creaza invitatie</Link>
-            </Button>
-          </div>
-        </div>
-      </nav>
+    <div className="min-h-screen bg-background overflow-x-hidden">
 
 
       {/* Hero — classic split */}
@@ -866,14 +829,6 @@ const Landing = () => {
           </div>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="py-12 px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <Logo size="md" />
-          <p className="text-sm text-muted-foreground">© 2026 eventspark. All rights reserved.</p>
-        </div>
-      </footer>
 
       {/* Dev picker */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 z-[9999]">
