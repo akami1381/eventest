@@ -173,8 +173,11 @@ const CreateEvent = () => {
     if (!file) return;
     setUploading(true);
     try {
+      const { data: userData } = await supabase.auth.getUser();
+      const uid = userData.user?.id;
+      if (!uid) throw new Error("You must be signed in to upload");
       const ext = file.name.split(".").pop();
-      const path = `flyers/${Date.now()}.${ext}`;
+      const path = `${uid}/flyers/${Date.now()}.${ext}`;
       const { error: uploadError } = await supabase.storage.from("event-assets").upload(path, file);
       if (uploadError) throw uploadError;
       const { data: urlData } = supabase.storage.from("event-assets").getPublicUrl(path);
