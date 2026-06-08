@@ -21,8 +21,15 @@ export default function EventQuickInfo({ event, onUpdate }: Props) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) {
+      toast.error("You must be signed in to upload");
+      return;
+    }
+
     const ext = file.name.split(".").pop();
-    const path = `event-images/${event.id}.${ext}`;
+    const path = `${uid}/event-images/${event.id}.${ext}`;
 
     const { error } = await supabase.storage
       .from("event-assets")
