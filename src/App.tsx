@@ -9,7 +9,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
-import PublicLayout from "./components/layout/PublicLayout";
+import { PublicLayout } from "./components/layout/PublicLayout";
 import Landing from "./pages/Landing";
 import Templates from "./pages/Templates";
 import Auth from "./pages/Auth";
