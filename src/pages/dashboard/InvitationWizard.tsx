@@ -51,10 +51,15 @@ function reducer(state: InvitationData, action: Action): InvitationData {
   return { ...state, ...action.patch };
 }
 
+const LAST_TEMPLATE_KEY = "invitation-last-template";
+
 export default function InvitationWizard() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const templateId = params.get("template");
+  const queryTemplateId = params.get("template");
+  const phaseParam = params.get("phase"); // customize | pay | send
+  const lastTemplateId = typeof window !== "undefined" ? localStorage.getItem(LAST_TEMPLATE_KEY) : null;
+  const templateId = queryTemplateId || lastTemplateId;
   const template = useMemo(() => TEMPLATES.find((t) => t.id === templateId), [templateId]);
 
   const [paid, setPaid] = useState(false);
@@ -69,6 +74,7 @@ export default function InvitationWizard() {
   useEffect(() => {
     if (!template) return;
     try {
+      localStorage.setItem(LAST_TEMPLATE_KEY, template.id);
       const stored = sessionStorage.getItem(draftKey) || localStorage.getItem(draftKey);
       if (stored) dispatch({ type: "set", data: { ...defaultDataFor(template.category, template.accent), ...JSON.parse(stored) } });
     } catch {}
@@ -82,16 +88,34 @@ export default function InvitationWizard() {
     } catch {}
   }, [data, draftKey, template]);
 
+  // Deep-link to a wizard phase via ?phase=customize|pay|send
+  useEffect(() => {
+    if (!template || !phaseParam) return;
+    const steps = getStepsForCategory(data.category ?? template.category);
+    if (phaseParam === "pay" || phaseParam === "send") {
+      const idx = steps.findIndex((s) => s.id === "payment");
+      if (idx >= 0) setStepIdx(idx);
+      setPaid(phaseParam === "send");
+    } else if (phaseParam === "customize") {
+      setStepIdx(0);
+      setPaid(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseParam, templateId]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [stepIdx]);
 
   if (!template) {
     return (
-      <div className="p-8 text-center">
-        <p className="text-muted-foreground mb-4">Niciun model selectat.</p>
+      <div className="max-w-xl mx-auto p-8 text-center">
+        <h1 className="font-display text-2xl tracking-[-0.02em] mb-2">Alege întâi un model</h1>
+        <p className="text-muted-foreground mb-6">
+          Ca să continui în wizard ai nevoie de un model de invitație. Toate modelele se pot personaliza ulterior.
+        </p>
         <Button asChild>
-          <Link to="/templates">Alege un model</Link>
+          <Link to="/templates">Vezi modelele</Link>
         </Button>
       </div>
     );
