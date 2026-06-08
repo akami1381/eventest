@@ -9,6 +9,7 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DashboardLayout } from "@/components/layout/DashboardLayout";
 
+import PublicLayout from "./components/layout/PublicLayout";
 import Landing from "./pages/Landing";
 import Templates from "./pages/Templates";
 import Auth from "./pages/Auth";
@@ -45,12 +46,12 @@ const App = () => (
             <ScrollToTop />
             <Routes>
               {/* Public */}
-              <Route path="/" element={<Landing />} />
-              <Route path="/templates" element={<Templates />} />
-              <Route path="/invitations/new" element={<InvitationWizard />} />
-              <Route path="/auth" element={<Auth />} />
-              <Route path="/register/:slug" element={<Register />} />
-              <Route path="/company/:companySlug" element={<CompanyPage />} />
+              <Route path="/" element={<PublicLayout><Landing /></PublicLayout>} />
+              <Route path="/templates" element={<PublicLayout><Templates /></PublicLayout>} />
+              <Route path="/invitations/new" element={<PublicLayout><InvitationWizard /></PublicLayout>} />
+              <Route path="/auth" element={<PublicLayout><Auth /></PublicLayout>} />
+              <Route path="/register/:slug" element={<PublicLayout><Register /></PublicLayout>} />
+              <Route path="/company/:companySlug" element={<PublicLayout><CompanyPage /></PublicLayout>} />
 
               {/* Dashboard (protected) */}
               <Route path="/dashboard" element={<Navigate to="/dashboard/events" replace />} />
